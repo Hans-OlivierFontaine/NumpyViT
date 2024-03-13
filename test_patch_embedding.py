@@ -1,7 +1,7 @@
 import numpy as np
 import unittest
 
-from model import PatchEmbedding
+from patch_embeddings import PatchEmbedding
 
 
 class TestPatchEmbedding(unittest.TestCase):
