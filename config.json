@@ -1,0 +1,16 @@
+{
+  "image_size": 224,
+  "patch_size": 16,
+  "num_channels": 3,
+  "embedding_dim": 768,
+  "num_heads": 12,
+  "num_encoder_layers": 12,
+  "mlp_dim": 3072,
+  "dropout_rate": 0.1,
+  "num_classes": 1000,
+  "batch_size": 32,
+  "learning_rate": 3e-4,
+  "num_epochs": 100,
+  "optimizer": "adam",
+  "loss_function": "cross_entropy"
+}
