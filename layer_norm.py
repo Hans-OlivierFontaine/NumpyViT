@@ -50,8 +50,8 @@ class LayerNorm:
         dgamma = np.sum(grad_output * self.x_normalized, axis=0)
         dbeta = np.sum(grad_output, axis=0)
 
-        self.gamma -= self.learning_rate * dgamma
-        self.beta -= self.learning_rate * dbeta
+        self.gamma -= self.learning_rate * np.sum(dgamma, axis=0)
+        self.beta -= self.learning_rate * np.sum(dbeta, axis=0)
 
         N = grad_output.shape[-1]
 
@@ -61,4 +61,4 @@ class LayerNorm:
                                                                                                axis=-1, keepdims=True)
         dx = dx_normalized * self.std_inv + dvar * 2.0 * self.x_centered / N + dmean / N
 
-        return dx
+        return dx, dgamma, dbeta
