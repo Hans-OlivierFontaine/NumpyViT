@@ -23,7 +23,8 @@ class Linear:
         :return: The output of the layer.
         """
         self.input = x
-        return np.dot(x, self.weights) + self.bias
+        output = np.dot(x, self.weights) + self.bias
+        return output
 
     def backward(self, d_output):
         """
@@ -33,9 +34,12 @@ class Linear:
         :return: The gradient of the loss with respect to the input of the layer.
         """
         d_input = np.dot(d_output, self.weights.T)
-        d_weights = np.dot(self.input.T, d_output)
-        d_biases = np.sum(d_output, axis=0)
+        input_reshaped = self.input.reshape(-1, self.input.shape[-1])
+        d_output_reshaped = d_output.reshape(-1, d_output.shape[-1])
+        d_weights = np.dot(input_reshaped.T, d_output_reshaped)
+        d_biases = np.sum(d_output, axis=(0, 1))
 
         self.weights -= self.learning_rate * d_weights
+        self.bias -= self.learning_rate * d_biases
 
         return d_input, d_weights, d_biases

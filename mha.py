@@ -55,15 +55,14 @@ def xavier_uniform_(array):
 
 
 class MultiHeadAttention:
-    def __init__(self, input_dim, embed_dim, num_heads):
+    def __init__(self, embed_dim, num_heads):
         assert embed_dim % num_heads == 0, "Embedding dimension must be 0 modulo number of heads."
 
-        self.input_dim = input_dim
         self.embed_dim = embed_dim
         self.num_heads = num_heads
         self.head_dim = embed_dim // num_heads
 
-        self.qkv_proj_weight = np.random.rand(input_dim, 3 * embed_dim)
+        self.qkv_proj_weight = np.random.rand(embed_dim, 3 * embed_dim)
         self.qkv_proj_bias = np.zeros(3 * embed_dim)
         self.o_proj_weight = np.random.rand(embed_dim, embed_dim)
         self.o_proj_bias = np.zeros(embed_dim)
@@ -119,10 +118,12 @@ class MultiHeadAttention:
 
         d_qkv = np.concatenate([d_q, d_k, d_v], axis=-1).transpose(0, 2, 1, 3).reshape(self.batch_size, self.seq_length,
                                                                                        -1)
-        self.d_qkv_proj_weight = np.dot(self.x.reshape(-1, self.input_dim).T, d_qkv.reshape(-1, 3 * self.embed_dim))
+        self.d_qkv_proj_weight = np.dot(self.x.reshape(-1, self.embed_dim).T, d_qkv.reshape(-1, 3 * self.embed_dim))
         self.d_qkv_proj_bias = np.sum(d_qkv, axis=(0, 1))
 
         self.qkv_proj_weight -= self.d_qkv_proj_weight
         self.qkv_proj_bias -= self.d_qkv_proj_bias
         self.o_proj_weight -= self.d_o_proj_weight
         self.o_proj_bias -= self.d_o_proj_bias
+
+        return d_values.reshape(d_values.shape[0], d_values.shape[2], d_values.shape[1] * d_values.shape[3])
