@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from learning import softmax
+from learning import softmax, cross_entropy_loss
 
 
 class TestSoftmax(unittest.TestCase):
@@ -42,6 +42,36 @@ class TestSoftmax(unittest.TestCase):
         # The test passes if the function successfully returns a valid output without errors.
         output = softmax(x)
         self.assertFalse(np.any(np.isnan(output)), "Softmax is not numerically stable.")
+
+
+class TestCrossEntropyLoss(unittest.TestCase):
+    def test_correct_calculation(self):
+        """Test cross-entropy loss calculation for known inputs and outputs."""
+        predictions = np.array([[0.7, 0.2, 0.1],
+                                [0.1, 0.9, 0.0]])
+        labels = np.array([[1, 0, 0],
+                           [0, 1, 0]])
+        predictions = softmax(predictions)
+
+        expected_loss = 0.6931592805048026
+        calculated_loss = cross_entropy_loss(predictions, labels)
+
+        self.assertAlmostEqual(calculated_loss, expected_loss, places=7,
+                               msg="Cross-entropy loss calculation is incorrect.")
+
+    def test_handling_zero_probability(self):
+        """Ensure numerical stability when predicted probability for the correct class is zero."""
+        predictions = np.array([[0.0, 1.0],
+                                [1.0, 0.0]])
+        labels = np.array([[1, 0],
+                           [0, 1]])
+        predictions = softmax(predictions)  # Apply softmax
+
+        calculated_loss = cross_entropy_loss(predictions, labels)
+
+        self.assertTrue(np.isfinite(calculated_loss),
+                        "Cross-entropy loss is not numerically stable for zero probabilities.")
+
 
 if __name__ == '__main__':
     unittest.main(argv=[''], exit=False)
