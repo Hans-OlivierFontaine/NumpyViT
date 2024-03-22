@@ -14,16 +14,15 @@ class TestAttentionBlock(unittest.TestCase):
         self.num_heads = 8
         self.num_layers = 6
         self.num_classes = 10
-        self.seq_length = 10
         self.batch_size = 2
         self.patch_size = 4
         self.num_patches = 64
         self.dropout_rate = 0.1
-        self.vision_transformer = VisionTransformer(embed_dim=self.embed_dim, hidden_dim=self.hidden_dim,
-                                                    num_channels=self.num_channels, num_heads=self.num_heads,
-                                                    num_layers=self.num_layers, num_classes=self.num_classes,
-                                                    patch_size=self.patch_size, num_patches=self.num_patches,
-                                                    dropout=self.dropout_rate)
+        self.vision_transformer = VisionTransformer(image_size=self.img_size, embed_dim=self.embed_dim,
+                                                    hidden_dim=self.hidden_dim, num_channels=self.num_channels,
+                                                    num_heads=self.num_heads, num_layers=self.num_layers,
+                                                    num_classes=self.num_classes, patch_size=self.patch_size,
+                                                    num_patches=self.num_patches, dropout=self.dropout_rate)
 
     def test_attention_block_output_shape(self):
         """
@@ -51,7 +50,8 @@ class TestAttentionBlock(unittest.TestCase):
                              'o_proj_bias': deepcopy(transformer_layer.attn.o_proj_bias),
                              'linear1_weights': deepcopy(transformer_layer.linear_1.weights),
                              'linear1_bias': deepcopy(transformer_layer.linear_1.bias),
-                             'linear2_weights': deepcopy(transformer_layer.linear_2.weights)} for transformer_layer in
+                             'linear2_weights': deepcopy(transformer_layer.linear_2.weights),
+                             'linear2_bias': deepcopy(transformer_layer.linear_2.bias)} for transformer_layer in
                             self.vision_transformer.transformer_layers]
 
         fake_grads = np.random.randn(*output.shape)
