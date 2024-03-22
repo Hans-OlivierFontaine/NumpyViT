@@ -57,3 +57,5 @@ class ViTMLP:
         self.bias1 -= self.learning_rate * self.grad_bias1
         self.weights2 -= self.learning_rate * self.grad_weights2
         self.bias2 -= self.learning_rate * self.grad_bias2
+
+        return dDense1_dWeights1

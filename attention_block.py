@@ -6,15 +6,16 @@ from linear import Linear
 
 
 class AttentionBlock:
-    def __init__(self, embed_dim, hidden_dim, num_heads, dropout=0.0):
-        self.layer_norm_1 = LayerNorm(embed_dim)
-        self.attn = MultiHeadAttention(embed_dim, num_heads)
-        self.layer_norm_2 = LayerNorm(embed_dim)
-        self.linear_1 = Linear(embed_dim, hidden_dim)
+    def __init__(self, embed_dim, hidden_dim, num_heads, dropout=0.0, learning_rate=0.01):
+        self.layer_norm_1 = LayerNorm(embed_dim, learning_rate=learning_rate)
+        self.attn = MultiHeadAttention(embed_dim, num_heads, learning_rate=learning_rate)
+        self.layer_norm_2 = LayerNorm(embed_dim, learning_rate=learning_rate)
+        self.linear_1 = Linear(embed_dim, hidden_dim, learning_rate=learning_rate)
         self.gelu = GELULayer()
         self.dropout_1 = Dropout(dropout)
-        self.linear_2 = Linear(hidden_dim, embed_dim)
+        self.linear_2 = Linear(hidden_dim, embed_dim, learning_rate=learning_rate)
         self.dropout_2 = Dropout(dropout)
+        self.learning_rate = learning_rate
 
     def forward(self, x):
         inp_x = self.layer_norm_1.forward(x)
