@@ -36,7 +36,6 @@ def cross_entropy_loss(predictions, labels):
     predictions = np.clip(predictions, epsilon, 1. - epsilon)
 
     log_preds = np.log(predictions)
-    print(log_preds)
 
     loss = -np.sum(labels * log_preds) / labels.shape[0]
 
