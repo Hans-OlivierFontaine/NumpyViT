@@ -1,3 +1,6 @@
+from pathlib import Path
+import numpy as np
+
 from layer_norm import LayerNorm
 from mha import MultiHeadAttention
 from gelu import GELULayer
@@ -55,3 +58,13 @@ class AttentionBlock:
             'd_beta_2': d_beta_2
         }
         return d_layer_norm_1
+
+    def save(self, save_dir: Path, name: str):
+        self.attn.save(save_dir, f"attention_block_mha_{name}")
+        self.linear_1.save(save_dir, f"attention_block_linear1_{name}")
+        self.linear_2.save(save_dir, f"attention_block_linear2_{name}")
+
+    def load(self, save_dir: Path, name: str):
+        self.attn.load(save_dir, f"attention_block_mha_{name}")
+        self.linear_1.load(save_dir, f"attention_block_linear1_{name}")
+        self.linear_2.load(save_dir, f"attention_block_linear2_{name}")

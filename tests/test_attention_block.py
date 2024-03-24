@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+from pathlib import Path
 from attention_block import AttentionBlock
 from copy import deepcopy
 
@@ -56,6 +57,42 @@ class TestAttentionBlock(unittest.TestCase):
 
         self.assertFalse(np.array_equal(copied_params['linear2_weights'], self.attention_block.linear_2.weights))
         self.assertFalse(np.array_equal(copied_params['linear2_bias'], self.attention_block.linear_2.bias))
+
+    def test_save_load(self):
+        """Check that the save and load functions work."""
+
+        original_weights1 = deepcopy(self.attention_block.linear_1.weights)
+        original_bias1 = deepcopy(self.attention_block.linear_1.bias)
+        original_weights2 = deepcopy(self.attention_block.linear_2.weights)
+        original_bias2 = deepcopy(self.attention_block.linear_2.bias)
+        original_qkv_proj_weight = deepcopy(self.attention_block.attn.qkv_proj_weight)
+        original_qkv_proj_bias = deepcopy(self.attention_block.attn.qkv_proj_bias)
+
+        (Path(__file__).parent / "assets").mkdir(exist_ok=True, parents=True)
+        self.attention_block.save((Path(__file__).parent / "assets"), "attention_block_test")
+
+        self.attention_block.linear_1.weights += 1
+        self.attention_block.linear_1.bias += 1
+        self.attention_block.linear_2.weights += 1
+        self.attention_block.linear_2.bias += 1
+        self.attention_block.attn.qkv_proj_weight += 1
+        self.attention_block.attn.qkv_proj_bias += 1
+
+        self.assertFalse(np.array_equal(original_weights1, self.attention_block.linear_1.weights))
+        self.assertFalse(np.array_equal(original_bias1, self.attention_block.linear_1.bias))
+        self.assertFalse(np.array_equal(original_weights2, self.attention_block.linear_2.weights))
+        self.assertFalse(np.array_equal(original_bias2, self.attention_block.linear_2.bias))
+        self.assertFalse(np.array_equal(original_qkv_proj_weight, self.attention_block.attn.qkv_proj_weight))
+        self.assertFalse(np.array_equal(original_qkv_proj_bias, self.attention_block.attn.qkv_proj_bias))
+
+        self.attention_block.load((Path(__file__).parent / "assets"), "attention_block_test")
+
+        self.assertTrue(np.array_equal(original_weights1, self.attention_block.linear_1.weights))
+        self.assertTrue(np.array_equal(original_bias1, self.attention_block.linear_1.bias))
+        self.assertTrue(np.array_equal(original_weights2, self.attention_block.linear_2.weights))
+        self.assertTrue(np.array_equal(original_bias2, self.attention_block.linear_2.bias))
+        self.assertTrue(np.array_equal(original_qkv_proj_weight, self.attention_block.attn.qkv_proj_weight))
+        self.assertTrue(np.array_equal(original_qkv_proj_bias, self.attention_block.attn.qkv_proj_bias))
 
 
 if __name__ == '__main__':

@@ -1,6 +1,8 @@
 import unittest
 
 import numpy as np
+from copy import deepcopy
+from pathlib import Path
 
 from mlp import ViTMLP
 
@@ -54,6 +56,38 @@ class MLPTests(unittest.TestCase):
 
         self.assertTrue(np.all(output >= -10) and np.all(output <= 10),
                         "Output values should be within a reasonable range.")
+
+    def test_save_load(self):
+        """Check that the save and load functions work."""
+        mlp_num_hiddens, mlp_num_outputs, dropout = 128, 10, 0.5
+        batch_size, input_dim = 4, 512
+
+        vit_mlp = ViTMLP(input_dim, mlp_num_hiddens, mlp_num_outputs, dropout)
+
+        original_weights1 = deepcopy(vit_mlp.weights1)
+        original_bias1 = deepcopy(vit_mlp.bias1)
+        original_weights2 = deepcopy(vit_mlp.weights2)
+        original_bias2 = deepcopy(vit_mlp.bias2)
+
+        (Path(__file__).parent / "assets").mkdir(exist_ok=True, parents=True)
+        vit_mlp.save((Path(__file__).parent / "assets"), "mlp_test")
+
+        vit_mlp.weights1 += 1
+        vit_mlp.bias1 += 1
+        vit_mlp.weights2 += 1
+        vit_mlp.bias2 += 1
+
+        self.assertFalse(np.array_equal(original_weights1, vit_mlp.weights1))
+        self.assertFalse(np.array_equal(original_bias1, vit_mlp.bias1))
+        self.assertFalse(np.array_equal(original_weights2, vit_mlp.weights2))
+        self.assertFalse(np.array_equal(original_bias2, vit_mlp.bias2))
+
+        vit_mlp.load((Path(__file__).parent / "assets"), "mlp_test")
+
+        self.assertTrue(np.array_equal(original_weights1, vit_mlp.weights1))
+        self.assertTrue(np.array_equal(original_bias1, vit_mlp.bias1))
+        self.assertTrue(np.array_equal(original_weights2, vit_mlp.weights2))
+        self.assertTrue(np.array_equal(original_bias2, vit_mlp.bias2))
 
 
 if __name__ == '__main__':

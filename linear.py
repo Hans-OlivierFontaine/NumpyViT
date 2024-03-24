@@ -1,4 +1,5 @@
 import numpy as np
+from pathlib import Path
 
 
 class Linear:
@@ -43,3 +44,11 @@ class Linear:
         self.bias -= self.learning_rate * d_biases
 
         return d_input, d_weights, d_biases
+
+    def save(self, save_dir: Path, name: str):
+        np.save((save_dir / (name + "_weights.npy")).__str__(), self.weights)
+        np.save((save_dir / (name + "_bias.npy")).__str__(), self.bias)
+
+    def load(self, save_dir: Path, name: str):
+        self.weights = np.load((save_dir / (name + "_weights.npy")).__str__())
+        self.bias = np.load((save_dir / (name + "_bias.npy")).__str__())

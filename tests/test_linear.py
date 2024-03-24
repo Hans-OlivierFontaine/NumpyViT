@@ -1,5 +1,7 @@
 import unittest
 import numpy as np
+from pathlib import Path
+from copy import deepcopy
 from linear import Linear
 
 
@@ -28,6 +30,28 @@ class TestLinearLayer(unittest.TestCase):
         self.assertEqual(d_input.shape, x.shape)
         self.assertEqual(d_weights.shape, layer.weights.shape)
         self.assertEqual(d_bias.shape, layer.bias.shape)
+
+    def test_save_load(self):
+        """Check that the save and load functions work."""
+        input_dim, output_dim, num_samples = 5, 3, 10
+        layer = Linear(input_dim, output_dim)
+
+        original_weights = deepcopy(layer.weights)
+        original_bias = deepcopy(layer.bias)
+
+        (Path(__file__).parent / "assets").mkdir(exist_ok=True, parents=True)
+        layer.save((Path(__file__).parent / "assets"), "linear_test")
+
+        layer.weights += 1
+        layer.bias += 1
+
+        self.assertFalse(np.array_equal(original_weights, layer.weights))
+        self.assertFalse(np.array_equal(original_bias, layer.bias))
+
+        layer.load((Path(__file__).parent / "assets"), "linear_test")
+
+        self.assertTrue(np.array_equal(original_weights, layer.weights))
+        self.assertTrue(np.array_equal(original_bias, layer.bias))
 
 
 if __name__ == '__main__':

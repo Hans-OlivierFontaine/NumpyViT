@@ -1,6 +1,8 @@
 import unittest
 
 import numpy as np
+from pathlib import Path
+from copy import deepcopy
 
 from mha import MultiHeadAttention, scaled_dot_product_attention
 
@@ -66,6 +68,38 @@ class TestMHA(unittest.TestCase):
                          "QKV projection weights not updated.")
         self.assertFalse(np.array_equal(initial_o_proj_weight, mha.o_proj_weight),
                          "Output projection weights not updated.")
+
+    def test_save_load(self):
+        """Check that the save and load functions work."""
+        embed_dim = 256
+        num_heads = 8
+
+        mha = MultiHeadAttention(embed_dim, num_heads)
+
+        original_weights1 = deepcopy(mha.qkv_proj_weight)
+        original_bias1 = deepcopy(mha.qkv_proj_bias)
+        original_weights2 = deepcopy(mha.o_proj_weight)
+        original_bias2 = deepcopy(mha.o_proj_bias)
+
+        (Path(__file__).parent / "assets").mkdir(exist_ok=True, parents=True)
+        mha.save((Path(__file__).parent / "assets"), "mha_test")
+
+        mha.qkv_proj_weight += 1
+        mha.qkv_proj_bias += 1
+        mha.o_proj_weight += 1
+        mha.o_proj_bias += 1
+
+        self.assertFalse(np.array_equal(original_weights1, mha.qkv_proj_weight))
+        self.assertFalse(np.array_equal(original_bias1, mha.qkv_proj_bias))
+        self.assertFalse(np.array_equal(original_weights2, mha.o_proj_weight))
+        self.assertFalse(np.array_equal(original_bias2, mha.o_proj_bias))
+
+        mha.load((Path(__file__).parent / "assets"), "mha_test")
+
+        self.assertTrue(np.array_equal(original_weights1, mha.qkv_proj_weight))
+        self.assertTrue(np.array_equal(original_bias1, mha.qkv_proj_bias))
+        self.assertTrue(np.array_equal(original_weights2, mha.o_proj_weight))
+        self.assertTrue(np.array_equal(original_bias2, mha.o_proj_bias))
 
 
 if __name__ == '__main__':

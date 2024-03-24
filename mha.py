@@ -1,4 +1,5 @@
 import numpy as np
+from pathlib import Path
 
 
 def scaled_dot_product_attention(Q, K, V, mask=None, eps=1e-6):
@@ -128,3 +129,15 @@ class MultiHeadAttention:
         self.o_proj_bias -= self.d_o_proj_bias * self.learning_rate
 
         return d_values.reshape(d_values.shape[0], d_values.shape[2], d_values.shape[1] * d_values.shape[3])
+
+    def save(self, save_dir: Path, name: str):
+        np.save((save_dir / (name + "_qkv_proj_weight.npy")).__str__(), self.qkv_proj_weight)
+        np.save((save_dir / (name + "_qkv_proj_bias.npy")).__str__(), self.qkv_proj_bias)
+        np.save((save_dir / (name + "_o_proj_weight.npy")).__str__(), self.o_proj_weight)
+        np.save((save_dir / (name + "_o_proj_bias.npy")).__str__(), self.o_proj_bias)
+
+    def load(self, save_dir: Path, name: str):
+        self.qkv_proj_weight = np.load((save_dir / (name + "_qkv_proj_weight.npy")).__str__())
+        self.qkv_proj_bias = np.load((save_dir / (name + "_qkv_proj_bias.npy")).__str__())
+        self.o_proj_weight = np.load((save_dir / (name + "_o_proj_weight.npy")).__str__())
+        self.o_proj_bias = np.load((save_dir / (name + "_o_proj_bias.npy")).__str__())
