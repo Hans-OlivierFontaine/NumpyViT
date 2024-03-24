@@ -1,4 +1,5 @@
 import numpy as np
+from pathlib import Path
 
 
 class ViTMLP:
@@ -59,3 +60,15 @@ class ViTMLP:
         self.bias2 -= self.learning_rate * self.grad_bias2
 
         return dDense1_dWeights1
+
+    def save(self, save_dir: Path, name: str):
+        np.save((save_dir / (name + "_weights1.npy")).__str__(), self.weights1)
+        np.save((save_dir / (name + "_bias1.npy")).__str__(), self.bias1)
+        np.save((save_dir / (name + "_weights2.npy")).__str__(), self.weights2)
+        np.save((save_dir / (name + "_bias2.npy")).__str__(), self.bias2)
+
+    def load(self, save_dir: Path, name: str):
+        self.weights1 = np.load((save_dir / (name + "_weights1.npy")).__str__())
+        self.bias1 = np.load((save_dir / (name + "_bias1.npy")).__str__())
+        self.weights2 = np.load((save_dir / (name + "_weights2.npy")).__str__())
+        self.bias2 = np.load((save_dir / (name + "_bias2.npy")).__str__())

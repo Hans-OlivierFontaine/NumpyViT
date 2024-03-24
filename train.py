@@ -1,4 +1,5 @@
 import numpy as np
+from pathlib import Path
 
 from numpy_vit import VisionTransformer
 from dataset import ImageFolderDataset, DataLoader
@@ -19,6 +20,7 @@ if __name__ == "__main__":
     num_patches = 64
     dropout_rate = 0.1
     validate = True
+    save_dir = Path(__file__).parent / "data" / "models"
 
     ds_train = ImageFolderDataset("./data/train/")
     ds_val = ImageFolderDataset("./data/val/")
@@ -69,6 +71,8 @@ if __name__ == "__main__":
                 epoch_loss += loss
 
             print(f'Val Epoch {epoch + 1}, Loss: {epoch_loss / len(val_loader)}, Acc: {acc}')
+
+    model.save(save_dir=save_dir)
 
     epoch_loss = 0
     num_parsed = 0

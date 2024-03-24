@@ -16,7 +16,7 @@ To set up the project environment:
 
 1. Clone the repository:
 ```
-1. git clone https://github.com/yourgithub/yourprojectname.git
+1. git clone https://github.com/Hans-OlivierFontaine/NumpyViT.git
 ```
 2. Navigate to the project directory:
 ```

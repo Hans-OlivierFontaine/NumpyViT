@@ -1,4 +1,5 @@
 import numpy as np
+from pathlib import Path
 
 from attention_block import AttentionBlock
 from linear import Linear
@@ -62,3 +63,15 @@ class VisionTransformer:
         d_x = d_x[:, 1:, :]
 
         self.input_layer.backward(d_x)
+
+    def save(self, save_dir: Path):
+        self.input_layer.save(save_dir, "input_layer")
+        for i, layer in enumerate(self.transformer_layers):
+            layer.save(save_dir, f"transformer_layer_{i}")
+        self.mlp_head.save(save_dir, "mlp_head")
+
+    def load(self, save_dir: Path):
+        self.input_layer.load(save_dir, "input_layer")
+        for i in range(len(self.transformer_layers)):
+            self.transformer_layers[i].load(save_dir, f"transformer_layer_{i}")
+        self.mlp_head.load(save_dir, "mlp_head")
