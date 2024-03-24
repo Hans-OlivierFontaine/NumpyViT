@@ -40,3 +40,25 @@ def cross_entropy_loss(predictions, labels):
     loss = -np.sum(labels * log_preds) / labels.shape[0]
 
     return loss
+
+
+def derivative_cross_entropy_softmax(predictions, labels):
+    # Assuming predictions are softmax probabilities and labels are one-hot encoded
+    return predictions - labels
+
+
+def accuracy(predictions, labels):
+    """
+    Calculate the accuracy of predictions against true labels.
+
+    Args:
+    predictions: Numpy array of shape (N, C) containing the predicted probabilities for C classes for N examples.
+    labels: Numpy array of shape (N, C) containing the one-hot encoded labels for N examples.
+
+    Returns:
+    The accuracy as a float.
+    """
+    pred_indices = np.argmax(predictions, axis=1)
+    label_indices = np.argmax(labels, axis=1)
+    acc = np.mean(pred_indices == label_indices)
+    return acc

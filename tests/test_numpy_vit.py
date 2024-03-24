@@ -28,7 +28,7 @@ class TestAttentionBlock(unittest.TestCase):
         """
         Test that the AttentionBlock forward pass outputs the correct shape.
         """
-        x = np.random.randn(self.batch_size, self.num_channels, self.img_size, self.img_size)
+        x = np.random.randn(self.batch_size, self.img_size, self.img_size, self.num_channels)
         output = self.vision_transformer.forward(x)
 
         self.assertEqual(output.shape, (self.batch_size, self.num_classes))
@@ -37,7 +37,7 @@ class TestAttentionBlock(unittest.TestCase):
         """
         Test that parameters in the AttentionBlock are updated.
         """
-        x = np.random.randn(self.batch_size, self.num_channels, self.img_size, self.img_size)
+        x = np.random.randn(self.batch_size, self.img_size, self.img_size, self.num_channels)
 
         output = self.vision_transformer.forward(x)
 
