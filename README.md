@@ -3,11 +3,10 @@ This project implements a simplified Vision Transformer (ViT), as described in t
 
 ## Project Structure
 
-- `vit.py`: Contains the Vision Transformer model implementation.
-- `dataset.py`: A module for loading and preprocessing the EuroSAT dataset.
-- `dataloader.py`: Provides a custom data loader for batching and iterating over the dataset.
 - `train.py`: Script to train the ViT model on the EuroSAT dataset.
-- `utils.py`: Utility functions, including image transformations and loss calculations.
+- `model`: Contains the Vision Transformer model implementation.
+- `utils`: Utility tools, such as the dataset and dataloader.
+- `data`: Directory where the dataset is placed for the experiment.
 - `requirements.txt`: Lists the project dependencies for easy installation.
 
 ## Installation
