@@ -2,7 +2,7 @@ import unittest
 import numpy as np
 from pathlib import Path
 from copy import deepcopy
-from linear import Linear
+from model.linear import Linear
 
 
 class TestLinearLayer(unittest.TestCase):

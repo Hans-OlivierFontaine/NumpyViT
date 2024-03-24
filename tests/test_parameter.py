@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from parameter import Parameter
+from model.parameter import Parameter
 
 
 class TestParameter(unittest.TestCase):

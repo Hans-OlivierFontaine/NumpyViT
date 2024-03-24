@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 from pathlib import Path
-from numpy_vit import VisionTransformer
+from model.numpy_vit import VisionTransformer
 from copy import deepcopy
 
 

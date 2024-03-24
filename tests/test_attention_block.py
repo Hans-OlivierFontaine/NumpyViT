@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 from pathlib import Path
-from attention_block import AttentionBlock
+from model.attention_block import AttentionBlock
 from copy import deepcopy
 
 

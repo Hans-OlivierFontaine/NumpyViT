@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from learning import softmax, cross_entropy_loss
+from model.learning import softmax, cross_entropy_loss
 
 
 class TestSoftmax(unittest.TestCase):

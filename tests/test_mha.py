@@ -4,7 +4,7 @@ import numpy as np
 from pathlib import Path
 from copy import deepcopy
 
-from mha import MultiHeadAttention, scaled_dot_product_attention
+from model.mha import MultiHeadAttention, scaled_dot_product_attention
 
 
 class TestMHA(unittest.TestCase):

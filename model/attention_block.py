@@ -1,11 +1,11 @@
 from pathlib import Path
 import numpy as np
 
-from layer_norm import LayerNorm
-from mha import MultiHeadAttention
-from gelu import GELULayer
-from dropout import Dropout
-from linear import Linear
+from model.layer_norm import LayerNorm
+from model.mha import MultiHeadAttention
+from model.gelu import GELULayer
+from model.dropout import Dropout
+from model.linear import Linear
 
 
 class AttentionBlock:

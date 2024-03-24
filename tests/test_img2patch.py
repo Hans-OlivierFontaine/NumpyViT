@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from img2patch import img_to_patch
+from model.img2patch import img_to_patch
 
 
 class TestImgToPatch(unittest.TestCase):

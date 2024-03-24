@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from layer_norm import LayerNorm
+from model.layer_norm import LayerNorm
 
 
 class MyTestCase(unittest.TestCase):

@@ -4,7 +4,7 @@ import numpy as np
 from copy import deepcopy
 from pathlib import Path
 
-from mlp import ViTMLP
+from model.mlp import ViTMLP
 
 
 class MLPTests(unittest.TestCase):

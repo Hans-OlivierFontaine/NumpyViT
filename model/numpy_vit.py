@@ -1,12 +1,12 @@
 import numpy as np
 from pathlib import Path
 
-from attention_block import AttentionBlock
-from linear import Linear
-from layer_norm import LayerNorm
-from parameter import Parameter
-from img2patch import img_to_patch
-from mlp import ViTMLP
+from model.attention_block import AttentionBlock
+from model.linear import Linear
+from model.layer_norm import LayerNorm
+from model.parameter import Parameter
+from model.img2patch import img_to_patch
+from model.mlp import ViTMLP
 
 
 class VisionTransformer:

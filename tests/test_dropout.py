@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from dropout import Dropout
+from model.dropout import Dropout
 
 
 class MyTestCase(unittest.TestCase):

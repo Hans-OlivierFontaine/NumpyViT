@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from gelu import GELULayer
+from model.gelu import GELULayer
 
 
 class MyTestCase(unittest.TestCase):

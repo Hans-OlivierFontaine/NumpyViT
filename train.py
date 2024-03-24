@@ -1,9 +1,8 @@
-import numpy as np
 from pathlib import Path
 
-from numpy_vit import VisionTransformer
-from dataset import ImageFolderDataset, DataLoader
-from learning import softmax, cross_entropy_loss, accuracy, derivative_cross_entropy_softmax
+from model.numpy_vit import VisionTransformer
+from utils.dataset import ImageFolderDataset, DataLoader
+from model.learning import softmax, cross_entropy_loss, accuracy, derivative_cross_entropy_softmax
 
 if __name__ == "__main__":
     learning_rate = 0.01
