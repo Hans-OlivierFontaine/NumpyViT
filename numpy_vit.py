@@ -11,6 +11,14 @@ from mlp import ViTMLP
 class VisionTransformer:
     def __init__(self, image_size, embed_dim, hidden_dim, num_channels, num_heads, num_layers, num_classes, patch_size,
                  num_patches, dropout=0.0, learning_rate=0.01):
+        assert all([isinstance(val, int) and val > 0 for val in [image_size, embed_dim, hidden_dim, num_channels, num_heads, num_layers, num_classes, patch_size, num_patches]])
+        assert image_size % patch_size == 0, "Image size must be divisible by patch size."
+        assert embed_dim % num_heads == 0, "Embedding dimension must be divisible by number of heads."
+
+        calculated_num_patches = (image_size // patch_size) ** 2
+        assert num_patches == calculated_num_patches, "Number of patches is incorrect."
+
+        assert hidden_dim >= embed_dim, "Hidden dimension should be at least as large as embedding dimension."
         self.image_size = image_size
         self.embed_dim = embed_dim
         self.patch_size = patch_size
@@ -28,7 +36,7 @@ class VisionTransformer:
 
     def forward(self, x):
         x = img_to_patch(x, self.patch_size)
-        B, T, _ = x.shape
+        B, T, X = x.shape
         x = self.input_layer.forward(x)
 
         cls_tokens = np.repeat(self.cls_token.data, B, axis=0)
